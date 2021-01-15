@@ -1,0 +1,240 @@
+Spring Cloud Gateway介绍
+
+docs：https://www.cnblogs.com/crazymakercircle/p/11704077.html
+
+=========================================== 介绍 ===============================================
+
+是Spring Cloud的一个全新项目，该项目基于Spring5.0、Spring Boot2.0、Project Reactor等技术开发的网关，
+旨在为微服务架构提供一种简单有效的统一的API路由管理方式
+
+Spring Cloud Gateway作为Spring Cloud生态系统中的网关，目标是替代Zuul，在Spring Cloud2.0以上的版本中，
+没有对新版本的Zuul2.0以上最新高性能版本进行集成，仍然还是使用Zuul2.0之前的非Reactor模式的老版本。
+而为了提升网关的性能，Spring Cloud Gateway是基于web Flux框架实现的，
+而web Flux框架底层则使用了高性能的Reactor模式通信框架Netty。
+
+Spring Cloud Gateway的目标，不仅仅是提供统一的路由方式，而是基于Filter链的方式提供了网关的基本功能，
+例如：安全、监控/指标、限流。
+
+============================================ 特征 ==============================================
+
+Spring Cloud Gateway的特征介绍如下：
+1. 基于SpringFrameWork 5，Project Rector 和Spring Boot2.0
+2. 集成Hystrix断路器
+3. 集成Spring Cloud Discovery Client
+4. Predicates和Filters作用于特定路由，易于编写的Predicates和Filters
+5. 具备一些网关的高级功能：动态路由、限流、路径重写
+
+从以上特征来说，和Zuul的差别并不大，和Zuul的主要的区别还是在底层的通信框架上。
+
+============================================ 术语 ==============================================
+
+Spring Cloud Gateway术语：
+1.Filter 过滤器
+    和Zuul的过滤器在概念上相似，可以用它拦截和修改请求，并且对上游的响应做二次处理。
+    过滤器为：org.springframework.cloud.gateway.filter.GatewayFilter的实例
+2.Route  路由
+    网关配置的基本组成模块，和Zuul路由模块类似，一个Route由一个id，一个目标URI，一组断言和一组过滤器定义。
+    如果断言为真，则路由匹配，目标URI会被访问
+3.Predicate 断言
+    这是一个Java8的Predicate，可以用它来匹配Http请求的任何内容，例如header或参数。
+    断言的输入类型是一个ServerWebExchange
+
+============================================ 架构 ==============================================
+
+Spring Cloud Gateway使用的web Flux中的Reactor-netty响应式编程组件，底层使用了Netty通讯框架
+
+============================================ Zuul IO模型 ==============================================
+
+Springcloud中所集成的Zuul版本，采用的是Tomcat容器，使用的是传统的Servlet IO处理模型。
+大家知道，servlet由servlet container进行生命周期管理。
+container启动时构造servlet对象并调用servlet init()进行初始化；
+container关闭时调用servlet destory()销毁servlet；
+container运行时接受请求，并为每个请求分配一个线程（一般从线程池中获取空闲线程）然后调用service()。
+
+弊端：servlet是一个简单的网络IO模型，当请求进入servlet container时，servlet container就会为其绑定一个线程，
+在并发不高的场景下这种模型是适用的，但是一旦并发上升，线程数量就会上涨，
+而线程资源代价是昂贵的（上线文切换，内存消耗大）严重影响请求的处理时间。
+在一些简单的业务场景下，不希望为每个request分配一个线程，只需要1个或几个线程就能应对极大并发的请求，
+这种业务场景下servlet模型没有优势。
+
+所以Springcloud Zuul 是基于servlet之上的一个阻塞式处理模型，
+即spring实现了处理所有request请求的一个servlet（DispatcherServlet），
+并由该servlet阻塞式处理处理。所以Springcloud Zuul无法摆脱servlet模型的弊端。
+虽然Zuul 2.0开始，使用了Netty，并且已经有了大规模Zuul 2.0集群部署的成熟案例，
+但是，Springcloud官方已经没有集成改版本的计划了。
+
+============================================ web Flux服务器 ==============================================
+
+Webflux模式替换了旧的Servlet线程模型。用少量的线程处理request和response io操作，这些线程称为Loop线程，
+而业务交给响应式编程框架处理，响应式编程是非常灵活的，用户可以将业务中阻塞的操作提交到响应式框架的work线程中执行，
+而不阻塞的操作依然可以在Loop线程中进行处理，大大提高了Loop线程的利用率。
+
+Webflux虽然可以兼容多个底层的通信框架，但是一般情况下，底层使用的还是Netty，
+毕竟，Netty是目前业界认可的最高性能的通信框架。而Webflux的Loop线程，
+正好就是著名的Reactor 模式IO处理模型的Reactor线程，如果使用的是高性能的通信框架Netty，这就是Netty的EventLoop线程。
+
+============================================ Gateway的处理流程 ==============================================
+
+客户端向 Spring Cloud Gateway 发出请求。然后在 Gateway Handler Mapping 中找到与请求相匹配的路由，
+将其发送到 Gateway Web Handler。Handler 再通过指定的过滤器链来将请求发送到我们实际的服务执行业务逻辑，
+然后返回。过滤器之间用虚线分开是因为过滤器可能会在发送代理请求之前（“pre”）或之后（“post”）执行业务逻辑。
+
+============================================ 配置方式 ==============================================
+
+这里主要讲和注册中心相结合的方式的路由配置
+在uri的schema部分使用lb:// + 服务名称的方式，表示从注册中心订阅服务，并且进行服务的路由。
+断言出加上 -Path=/{服务名称}/** 配置转发路径
+
+server:
+  port: 8080
+spring:
+  application:
+    name: mao-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: mao-data-api
+          uri: lb://mao-data-api
+          predicates:
+            - Path=/mao-data-api/**
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10001/rureka/
+
+============================================ 路由匹配规则 ==============================================
+
+Spring Cloud Gateway使用Predicates进行条件匹配，它里面内置了很多Predicates功能。
+Spring Cloud gateway使用web Flux的HandlerMapping作为底层支持来匹配转发路由，
+Spring Cloud Gateway内置了很多Predicates工厂，这些工厂通过不同的HTTP请求参数来进行匹配，多个工厂可以组合使用。
+Spring Cloud Gateway的主要功能就是转发请求，转发规则定义包括3个部分：
+    1. Route，路由。路由是网关的基本单元，由ID，URI，一组Predicates，一组Filter组成，根据Predicate进行匹配转发
+    2. Predicate，断言。路由转发的判断条件，Gateway支持多种方式：Path、Query、Method、Header等，写法：key=value。
+    3. Filter，过滤器。过滤器是转发请求时所经过的过滤逻辑，可用于修改请求、响应内容。
+
+============================================ Predicate断言 ==============================================
+
+Predicate，断言，来源于Java8，是Java8中引入的一个函数，Predicate接收一个参数，返回一个布尔值。
+该结构包含所种默认方法来讲Predicate组合成其它复杂的逻辑（比如与、或、非）。
+可用于接口请求参数校验，判断新老数据是否有变化是否需要更新操作等等。
+Spring Cloud Gateway中Spring利用Predicate的特性实现了各种路由匹配的规则：
+时间校验类：
+    AfterRoutePredicateFactory                          请求时间满足在配置时间之后
+    BeforeRoutePredicateFactory                         请求时间满足在配置时间之前
+    BetweenRoutePredicateFactory                        请求时间满足在配置时间之间
+Cookie校验类
+    CookieRoutePredicateFactory                         请求指定的Cookie正则匹配值
+Header校验类
+    HeaderRoutePredicateFactory                         请求指定的Header正则匹配值
+    CloudFoundryRouteServiceRoutePredicateFactory       请求Header中是否包含指定的名称
+Host校验类
+    HostRoutePredicateFactory                           请求Host匹配指定值
+Method校验类
+    MethodRoutePredicateFactory                         请求执行配置的Method值
+Path校验类
+    PathRoutePredicateFactory                           请求路径正则匹配值
+QueryParam参数校验类
+    QueryRoutePredicateFactory                          请求查询参数正则匹配指定值
+RemoteAddr远程地址校验类
+    RemoteAddrRoutePredicateFactory                     请求远程地址匹配指定值
+
+============================================ Predicate使用 ==============================================
+
+Predicate在Spring Cloud Gateway中的使用写法：
+1. 当请求路径以data或以api开头时通过( 路径可带参数写法：/data/{param} )
+- Path=/data/,/api/
+2. 当请求时间在指定时间之前时通过
+- Before=2020-01-01T00:00:00[Asia/Shanghai]
+3. 当请求时间在指定时间之后时通过
+- After=2020-01-01T00:00:00[Asia/Shanghai]
+4. 当请求事件在指定时间范围内时通过
+- Between=2020-01-01T00:00:00[Asia/Shanghai],2021-01-01T00:00:00[Asia/Shanghai]
+5. 当Cookie中含有id或name时通过
+- Cookie=id,name
+6. 当header中携带X-Request-id或满足\d+规则时通过
+- Header=X-Request-id,\d+
+7. 当主机名为www.keepyounger.top时通过
+- Host=www.keepyounger.top
+8. 当请求方法为GET时通过
+- Method=GET
+9. 当请求参数中包含id时通过
+- Query=id
+
+============================================ 过滤器规则 ==============================================
+
+配置Filter可修改请求、相应内容。
+规则
+StripPrefix     - StripPrefix=1                     截取路径为1，比如/api/data/的请求会被截取成/data/
+PrefixPath      - PrefixPath=/api                   会在请求路径前面添加/api
+ReWritePath     - ReWritePath=/data/,/api/data/     访问/data/请求时，会被转发到 /api/data上
+SetPath         - SetPath=/api/{path}               path表示原请求路径，请求会被设置为 /api/ + 源路径
+
+当配置多个Filter时，优先配置的Filter将会生效，当有一个生效时，其它的便不会再调用
+
+============================================ 熔断降级 ==============================================
+
+为什么需要熔断降级：
+在分布式系统中，网关作为流量的入口，因此会有大量的请求进入网关，向其他服务发起调用，其它服务不可避免地会出现调用失败，
+失败时不能让请求堆积在网关上，需要快速失败并返回给客户端。这就需要在网关上做熔断降级操作。
+为什么网管请求失败需要快速返回给客户端：
+因为当一个客户端请求发生故障时，请求会一直堆积在网关上，堆积多了会给网关甚至是服务器造成巨大的压力，
+因此需要对一些服务和页面实现一些有策略的降级，以缓解服务器资源的压力，保证核心业务正常允许。
+同时也保证了大部分客户得到正确的响应。
+
+使用Filter配置Hystrix进行熔断降级
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: mao-data-api
+          uri: lb://mao-data-api
+          predicates:
+            - Path=/mao-data-api/**
+          filters:
+            - name: Hystrix
+              args:
+                name: fallbackCmdA
+                fallbackUri: forward:/error/fallback
+hystrix.command.fallbackCmdA.execution.isolation.thread.timeoutInMilliseconds: 5000
+
+过滤器Hystrix，作用是通过Hystrix实现熔断降级。
+当上游的请求进入了Hystrix熔断降级机制时，就会调用fallbackUri配置的降级地址，
+需要注意的是：需要单独配置Hystrix的CommandKey的超时时间
+降级地址在gateway项目中进行配置
+
+@RestController
+@RequestMapping("error")
+public class FallbackController {
+
+    @GetMapping("fallback")
+    public String fallback() {
+        return "server error!";
+    }
+
+}
+
+============================================ 分布式限流 ==============================================
+
+待续
+
+============================================ 统一跨域 ==============================================
+
+请求经过网关时，需要在网关统一配置跨域请求，使所有请求跨域通过
+配置举例：
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+            allowed-methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTION

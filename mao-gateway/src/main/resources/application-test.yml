@@ -1,0 +1,56 @@
+server:
+  port: 10003
+
+spring:
+  application:
+    name: mao-gateway
+  cloud:
+    gateway:
+      filter:
+        remove-hop-by-hop:
+          headers:
+            # 以下是去掉网关默认去掉的请求响应头
+            - trailer
+            - te
+            - keep-alive
+            - transfer-encoding
+            - upgrade
+            - proxy-authenticate
+            - connection
+            - proxy-authorization
+            - x-application-context
+            # 以下是去掉服务层面定义的跨域
+            - access-control-allow-credentials
+            - access-control-allow-headers
+            - access-control-allow-methods
+            - access-control-allow-origin
+            - access-control-max-age
+            - vary
+      globalcors:
+        # 全部请求放开跨域拦截
+        cors-configurations:
+          '[/**]':
+            allowCredentials: true
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+            maxAge: 3628800
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        # mao-data-api服务路由
+        - id: MaoDataApi
+          # lb协议会激活LoadBalancerClient来解析后续的地址，自动根据注册的服务实例进行负载均衡
+          uri: lb://mao-data-api
+          predicates:
+            - Path=/api/data/**
+          filters:
+            - name: Hystrix
+              args:
+                name: FallbackController
+                fallbackUri: forward:/error/fallback
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10001/eureka/

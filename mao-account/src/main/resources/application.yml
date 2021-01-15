@@ -1,0 +1,8 @@
+#
+# \u8D26\u6237\u4E2D\u5FC3\u914D\u7F6E
+# \u6D4B\u8BD5\u73AF\u5883\uFF1Atest
+# \u751F\u4EA7\u73AF\u5883\uFF1Adev
+#
+spring:
+  profiles:
+    active: test
