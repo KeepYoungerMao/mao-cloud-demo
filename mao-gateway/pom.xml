@@ -19,6 +19,13 @@
 
     <dependencies>
 
+        <!-- common组件 -->
+        <dependency>
+            <groupId>com.mao.common</groupId>
+            <artifactId>mao-common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
         <!-- gateway -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

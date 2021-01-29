@@ -49,7 +49,7 @@ spring:
             - name: Hystrix
               args:
                 name: FallbackController
-                fallbackUri: forward:/error/fallback
+                fallbackUri: forward:/gateway/fallback/mao-data-api
 eureka:
   client:
     service-url:

@@ -15,6 +15,7 @@
         <module>mao-account</module>
         <module>mao-data-api</module>
         <module>mao-gateway</module>
+        <module>mao-common</module>
     </modules>
 
     <properties>
