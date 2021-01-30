@@ -1,5 +1,7 @@
 package com.mao.common.response;
 
+import java.util.List;
+
 /**
  * 统一数据返回体构建类
  * 根据相应类别返回不同格式数据
@@ -10,6 +12,10 @@ public abstract class MaoResponse {
 
     public <T> ResponseData<T> ok(T data) {
         return response(ResponseEnum.OK, data);
+    }
+
+    public <T> ResponseData<List<T>> ok(List<T> dataList) {
+        return response(ResponseEnum.OK, dataList);
     }
 
     public ResponseData<String> badRequest(String message) {

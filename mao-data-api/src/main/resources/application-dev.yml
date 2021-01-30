@@ -6,7 +6,7 @@ spring:
     name: mao-data-api
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ky?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/ky-data?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
     password: root
   mvc:
@@ -18,6 +18,14 @@ mybatis:
   configuration:
     # can get id while saving data
     use-generated-keys: true
+
+security:
+  oauth2:
+    client:
+      client-id: 1001001
+      client-secret: admin
+    resource:
+      token-info-uri: http://127.0.0.1:10002/oauth/check_token
 
 eureka:
   client:

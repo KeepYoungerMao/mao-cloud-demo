@@ -9,6 +9,7 @@
     </parent>
     <groupId>com.mao.home</groupId>
     <artifactId>mao-home</artifactId>
+    <version>${parent.version}</version>
     <name>mao-home</name>
     <description>Spring Cloud 注册中心</description>
 

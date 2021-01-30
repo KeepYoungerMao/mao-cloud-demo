@@ -14,7 +14,7 @@ public class FallbackServiceImpl extends MaoResponse implements FallbackService 
 
     @Override
     public ResponseData<?> fallback(String server) {
-        return badGateway("service " + server + "not started.");
+        return badGateway("service " + server + " not started.");
     }
 
 }

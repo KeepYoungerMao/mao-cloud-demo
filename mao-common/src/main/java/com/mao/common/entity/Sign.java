@@ -18,4 +18,17 @@ public class Sign {
     private Long update;            //上次更新时间
     private String updater;         //上次更新人
 
+    /**
+     * 设置操作者信息，设置本类标识信息
+     * @param operator SecurityContextHolder中获得本次请求的账户
+     */
+    public void setOperator(Operator operator) {
+        long now = System.currentTimeMillis();
+        this.create = now;
+        this.creator = operator.getUser();
+        this.del = false;
+        this.update = now;
+        this.updater = operator.getUser();
+    }
+
 }
