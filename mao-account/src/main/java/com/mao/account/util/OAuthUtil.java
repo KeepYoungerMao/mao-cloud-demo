@@ -1,6 +1,6 @@
 package com.mao.account.util;
 
-import com.mao.account.entity.sys.Browser;
+import com.mao.common.entity.Operator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -15,19 +15,16 @@ public class OAuthUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(OAuthUtil.class);
 
-    /**
-     * 获取当前客户端ClientId
-     */
-    public static Browser getBrowser() {
+    public static Operator getOperator() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             OAuth2Authentication oAuth2Authentication = (OAuth2Authentication) authentication;
             String username = oAuth2Authentication.getUserAuthentication().getName();
             String clientId = oAuth2Authentication.getOAuth2Request().getClientId();
-            return new Browser(clientId, username);
+            return new Operator(clientId, username);
         } catch (Exception e) {
-            LOG.warn("current request is non-user-request.");
-            return null;
+            LOG.warn("未在OAuth2中找到客户端与用户信息！");
+            return new Operator();
         }
     }
 

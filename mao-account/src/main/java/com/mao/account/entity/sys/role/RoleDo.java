@@ -1,6 +1,6 @@
 package com.mao.account.entity.sys.role;
 
-import com.mao.account.entity.Sign;
+import com.mao.common.entity.Sign;
 import lombok.Getter;
 import lombok.Setter;
 

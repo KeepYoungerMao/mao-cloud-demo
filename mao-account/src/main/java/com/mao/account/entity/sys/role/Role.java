@@ -1,6 +1,6 @@
 package com.mao.account.entity.sys.role;
 
-import com.mao.account.entity.Sign;
+import com.mao.account.util.OAuthUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -32,7 +32,7 @@ public class Role {
         roleDo.setCode(this.code);
         roleDo.setName(this.name);
         roleDo.setIntro(this.intro);
-        Sign.sign(roleDo);
+        roleDo.setOperator(OAuthUtil.getOperator());
         return roleDo;
     }
 }

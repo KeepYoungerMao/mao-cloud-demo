@@ -23,12 +23,12 @@
         SELECT * FROM sys_role WHERE `del` = FALSE AND LOCATE(#{keyword},`name`) > 0
     </select>
 
-    <select id="getRoles" parameterType="com.mao.account.entity.Query"
+    <select id="getRoles" parameterType="com.mao.common.entity.Query"
             resultType="com.mao.account.entity.sys.role.RoleDo">
         SELECT * FROM sys_role WHERE `del` = FALSE ORDER BY `id` ASC LIMIT #{start},#{size}
     </select>
 
-    <select id="getRolesTotal" parameterType="com.mao.account.entity.Query" resultType="java.lang.Integer">
+    <select id="getRolesTotal" parameterType="com.mao.common.entity.Query" resultType="java.lang.Integer">
         SELECT COUNT(`id`) FROM sys_role WHERE `del` = FALSE
     </select>
 

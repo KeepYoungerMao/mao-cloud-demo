@@ -20,6 +20,13 @@
 
     <dependencies>
 
+        <!-- common组件 -->
+        <dependency>
+            <groupId>com.mao.common</groupId>
+            <artifactId>mao-common</artifactId>
+            <version>${version}</version>
+        </dependency>
+
         <!-- web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

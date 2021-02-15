@@ -1,7 +1,7 @@
 package com.mao.account.service.auth;
 
 import com.mao.account.entity.sys.user.UserDo;
-import com.mao.account.util.SU;
+import com.mao.common.util.SU;
 import lombok.SneakyThrows;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;

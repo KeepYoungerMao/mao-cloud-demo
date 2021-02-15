@@ -31,4 +31,12 @@ public class Sign {
         this.updater = operator.getUser();
     }
 
+    public static void sign(Sign tVo, Sign tDo) {
+        tVo.setCreate(tDo.getCreate());
+        tVo.setCreator(tDo.getCreator());
+        tVo.setUpdate(tDo.getUpdate());
+        tVo.setUpdater(tDo.getUpdater());
+        tVo.setDel(tDo.getDel());
+    }
+
 }

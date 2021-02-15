@@ -21,7 +21,7 @@
         WHERE LOCATE(#{username},a.username) > 0 AND a.del = FALSE
     </select>
 
-    <select id="getUsers" parameterType="com.mao.account.entity.Query"
+    <select id="getUsers" parameterType="com.mao.common.entity.Query"
             resultType="com.mao.account.entity.sys.user.UserDo">
         SELECT a.*,b.name AS role_name,c.name AS client_name
         FROM sys_user AS a
@@ -31,7 +31,7 @@
         ORDER BY `id` LIMIT #{start},#{size}
     </select>
 
-    <select id="getUsersTotal" parameterType="com.mao.account.entity.Query" resultType="java.lang.Integer">
+    <select id="getUsersTotal" parameterType="com.mao.common.entity.Query" resultType="java.lang.Integer">
         SELECT COUNT(`id`) FROM sys_user WHERE `del` = FALSE
     </select>
 

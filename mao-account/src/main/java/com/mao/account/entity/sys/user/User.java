@@ -1,7 +1,7 @@
 package com.mao.account.entity.sys.user;
 
-import com.mao.account.entity.Sign;
-import com.mao.account.util.SU;
+import com.mao.account.util.OAuthUtil;
+import com.mao.common.util.NU;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -42,10 +42,10 @@ public class User {
         userDo.setExpired(this.expired);
         userDo.setLocked(this.locked);
         userDo.setEnabled(this.enabled);
-        userDo.setClient(SU.parseId(this.client));
-        userDo.setRole(SU.parseId(this.role));
+        userDo.setClient(NU.parseId(this.client));
+        userDo.setRole(NU.parseId(this.role));
         userDo.setAvatar(this.avatar);
-        Sign.sign(userDo);
+        userDo.setOperator(OAuthUtil.getOperator());
         return userDo;
     }
 

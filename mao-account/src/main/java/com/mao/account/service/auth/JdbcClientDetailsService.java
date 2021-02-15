@@ -1,7 +1,7 @@
 package com.mao.account.service.auth;
 
 import com.mao.account.mapper.sys.ClientMapper;
-import com.mao.account.util.SU;
+import com.mao.common.util.NU;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
@@ -25,8 +25,8 @@ public class JdbcClientDetailsService implements ClientDetailsService {
 
     @Override
     public ClientDetails loadClientByClientId(String client) throws ClientRegistrationException {
-        Long id = SU.parseId(client);
-        if (!SU.isZS(id))
+        Long id = NU.parseId(client);
+        if (NU.isNotZs(id))
             return null;
         return clientMapper.getClientById(id);
     }

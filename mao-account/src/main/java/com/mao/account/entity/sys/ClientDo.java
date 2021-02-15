@@ -1,7 +1,7 @@
 package com.mao.account.entity.sys;
 
-import com.mao.account.entity.Sign;
-import com.mao.account.util.SU;
+import com.mao.common.entity.Sign;
+import com.mao.common.util.SU;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +17,8 @@ import java.util.*;
 @Getter
 @Setter
 public class ClientDo extends Sign implements ClientDetails, Serializable {
+
+    private static final long serialVersionUID = 1233211234567L;
 
     private Long id;        //client_id
     private String name;
@@ -39,7 +41,7 @@ public class ClientDo extends Sign implements ClientDetails, Serializable {
 
     @Override
     public Set<String> getResourceIds() {
-        return SU.unJoin(this.resources);
+        return SU.unJoin(this.resources, ",");
     }
 
     @Override
@@ -59,12 +61,12 @@ public class ClientDo extends Sign implements ClientDetails, Serializable {
 
     @Override
     public Set<String> getScope() {
-        return SU.unJoin(this.scope);
+        return SU.unJoin(this.scope, ",");
     }
 
     @Override
     public Set<String> getAuthorizedGrantTypes() {
-        return SU.unJoin(this.grant_type);
+        return SU.unJoin(this.grant_type, ",");
     }
 
     @Override
