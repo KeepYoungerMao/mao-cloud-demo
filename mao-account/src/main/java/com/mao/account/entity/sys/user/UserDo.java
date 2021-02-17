@@ -1,9 +1,16 @@
 package com.mao.account.entity.sys.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mao.common.entity.Sign;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * 用户 sys_user
@@ -13,45 +20,57 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UserDo extends Sign {
+public class UserDo extends Sign implements UserDetails, Serializable {
 
+    private static final long serialVersionUID = 12345467890L;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;                //id
+
     private String username;        //登录名
+
     private String password;        //密码
+
     private Boolean expired;        //是否过期
+
     private Boolean locked;         //是否锁定
+
     private Boolean enabled;        //是否可使用
+
+    @JsonProperty("clientId")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long client;          //客户端id
-    private String client_name;
+
+    private String clientName;
+
+    @JsonProperty("roleId")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long role;            //角色id
-    private String role_name;
+
+    private String roleName;
+
     private String avatar;          //头像
 
-    public KyUserDetail toDetail() {
-        KyUserDetail userDetail = new KyUserDetail();
-        userDetail.setUsername(this.username);
-        userDetail.setPassword(this.password);
-        userDetail.setExpired(this.expired);
-        userDetail.setLocked(this.locked);
-        userDetail.setEnabled(this.enabled);
-        userDetail.setClient(String.valueOf(this.client));
-        return userDetail;
+    private List<GrantedAuthority> authorities;     //权限列表
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return !this.expired;
     }
 
-    public UserVo toVo() {
-        UserVo vo = new UserVo();
-        vo.setId(String.valueOf(this.id));
-        vo.setUsername(this.username);
-        vo.setExpired(this.expired);
-        vo.setLocked(this.locked);
-        vo.setEnabled(this.enabled);
-        vo.setClient(String.valueOf(this.client));
-        vo.setClient_name(this.client_name);
-        vo.setRole(String.valueOf(this.role));
-        vo.setRole_name(this.role_name);
-        vo.setAvatar(this.avatar);
-        Sign.sign(vo, this);
-        return vo;
+    @Override
+    public boolean isAccountNonLocked() {
+        return !this.locked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return !this.expired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
     }
 
 }

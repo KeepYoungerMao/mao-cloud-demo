@@ -5,8 +5,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * @author : create by zongx at 2020/11/13 15:23
  */
@@ -15,7 +13,5 @@ import java.util.List;
 public interface ClientMapper {
 
     ClientDo getClientById(@Param("id") Long id);
-
-    List<ClientDo> getClients();
 
 }

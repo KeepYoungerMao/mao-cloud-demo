@@ -7,8 +7,4 @@
         SELECT * FROM sys_client WHERE `del` = FALSE AND `id` = #{id}
     </select>
 
-    <select id="getClients" resultType="com.mao.account.entity.sys.ClientDo">
-        SELECT `id`,`name` FROM sys_client WHERE `del` = FALSE
-    </select>
-
 </mapper>

@@ -1,7 +1,5 @@
 package com.mao.account.entity.sys.user;
 
-import com.mao.account.util.OAuthUtil;
-import com.mao.common.util.NU;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -14,7 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 @Getter
 @Setter
-public class User {
+public class UserPo {
     private String id;              //id
     @NotNull
     @Length(min = 2, max = 20)
@@ -34,19 +32,5 @@ public class User {
     private String role;            //角色id
     @NotNull
     private String avatar;          //头像
-
-    public UserDo toDo() {
-        UserDo userDo = new UserDo();
-        userDo.setUsername(this.username);
-        userDo.setPassword(this.password);
-        userDo.setExpired(this.expired);
-        userDo.setLocked(this.locked);
-        userDo.setEnabled(this.enabled);
-        userDo.setClient(NU.parseId(this.client));
-        userDo.setRole(NU.parseId(this.role));
-        userDo.setAvatar(this.avatar);
-        userDo.setOperator(OAuthUtil.getOperator());
-        return userDo;
-    }
 
 }

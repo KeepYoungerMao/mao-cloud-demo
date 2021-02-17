@@ -1,6 +1,5 @@
 package com.mao.account.service.auth;
 
-import com.mao.account.entity.sys.user.KyUserDetail;
 import com.mao.account.entity.sys.user.UserDo;
 import com.mao.account.mapper.sys.RolePermissionMapper;
 import com.mao.account.mapper.sys.UserMapper;
@@ -48,14 +47,13 @@ public class JdbcUserDetailsService implements UserDetailsService {
         UserDo userDo = userMapper.getUserByUsername(username);
         if (null == userDo || null == userDo.getId())
             return null;
-        KyUserDetail userDetail = userDo.toDetail();
         //获取该用户目前所拥有的权限信息
         List<String> permissions = rolePermissionMapper.getPermissionByRoleId(userDo.getRole());
         //组装数据
         List<GrantedAuthority> list = new ArrayList<>();
         permissions.forEach(s -> list.add((GrantedAuthority) () -> s));
-        userDetail.setAuthorities(list);
-        return userDetail;
+        userDo.setAuthorities(list);
+        return userDo;
     }
 
 }
