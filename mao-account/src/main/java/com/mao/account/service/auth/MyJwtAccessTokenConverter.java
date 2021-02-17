@@ -1,6 +1,6 @@
 package com.mao.account.service.auth;
 
-import com.mao.account.entity.sys.user.UserDo;
+import com.mao.account.entity.sys.User;
 import com.mao.common.util.SU;
 import lombok.SneakyThrows;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -22,8 +22,8 @@ public class MyJwtAccessTokenConverter extends JwtAccessTokenConverter {
             //获取
             String clientId = authentication.getOAuth2Request().getClientId();
             Object principal = authentication.getPrincipal();
-            if (principal instanceof UserDo) {
-                UserDo user = (UserDo) principal;
+            if (principal instanceof User) {
+                User user = (User) principal;
                 String realClientId = String.valueOf(user.getClient());
                 if (SU.isNotEmpty(clientId) && SU.isNotEmpty(realClientId)) {
                     if (!clientId.equals(realClientId)) {

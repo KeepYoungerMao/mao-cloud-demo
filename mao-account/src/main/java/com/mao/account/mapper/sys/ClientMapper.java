@@ -1,6 +1,6 @@
 package com.mao.account.mapper.sys;
 
-import com.mao.account.entity.sys.ClientDo;
+import com.mao.account.entity.sys.Client;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface ClientMapper {
 
-    ClientDo getClientById(@Param("id") Long id);
+    Client getClientById(@Param("id") Long id);
 
 }

@@ -1,4 +1,4 @@
-package com.mao.account.entity.sys.user;
+package com.mao.account.entity.sys;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +17,8 @@ public class UserPass {
     private String username;        //username
     @NotNull
     @Length(min = 4, max = 16)
-    private String old_pass;        //old password
+    private String oldPass;        //old password
     @NotNull
     @Length(min = 4, max = 16)
-    private String new_pass;        //new password
+    private String newPass;        //new password
 }

@@ -1,7 +1,7 @@
 package com.mao.account.mapper.sys;
 
-import com.mao.account.entity.sys.user.UserDo;
-import com.mao.account.entity.sys.user.UserPass;
+import com.mao.account.entity.sys.User;
+import com.mao.account.entity.sys.UserPass;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -18,19 +18,19 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    UserDo getUserByUsername(@Param("username") String username);
+    User getUserByUsername(@Param("username") String username);
 
-    List<UserDo> getUserByUsernameLike(@Param("username") String username);
+    List<User> getUserByUsernameLike(@Param("username") String username);
 
-    List<UserDo> getUsers(Query query);
+    List<User> getUsers(Query query);
 
     Integer getUsersTotal(Query query);
 
     Integer checkExistUsername(@Param("username") String username);
 
-    void saveUser(UserDo userDo);
+    void saveUser(User user);
 
-    Integer updateUser(UserDo userDo);
+    Integer updateUser(User user);
 
     Integer updateUserPass(UserPass userPass);
 

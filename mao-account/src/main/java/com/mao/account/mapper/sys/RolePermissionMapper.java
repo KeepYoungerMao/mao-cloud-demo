@@ -1,7 +1,7 @@
 package com.mao.account.mapper.sys;
 
-import com.mao.account.entity.sys.role.PermissionDo;
-import com.mao.account.entity.sys.role.RoleDo;
+import com.mao.account.entity.sys.Permission;
+import com.mao.account.entity.sys.RoleDo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -42,6 +42,6 @@ public interface RolePermissionMapper {
 
     void deleteRolePermissions(@Param("id") long id);
 
-    List<PermissionDo> getPermissions();
+    List<Permission> getPermissions();
 
 }

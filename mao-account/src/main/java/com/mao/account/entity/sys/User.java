@@ -1,4 +1,4 @@
-package com.mao.account.entity.sys.user;
+package com.mao.account.entity.sys;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,7 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class UserDo extends Sign implements UserDetails, Serializable {
+public class User extends Sign implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 12345467890L;
 

@@ -1,4 +1,4 @@
-package com.mao.account.entity.sys.role;
+package com.mao.account.entity.sys;
 
 import com.mao.account.util.OAuthUtil;
 import lombok.Getter;
@@ -14,13 +14,17 @@ import java.util.List;
 @Getter
 @Setter
 public class Role {
+
     private String id;
+
     @NotNull
     @Length(min = 1, max = 20)
     private String code;
+
     @NotNull
     @Length(min = 1, max = 20)
     private String name;
+
     @Length(max = 200)
     private String intro;
 

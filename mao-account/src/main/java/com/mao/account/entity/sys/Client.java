@@ -16,7 +16,7 @@ import java.util.*;
  */
 @Getter
 @Setter
-public class ClientDo extends Sign implements ClientDetails, Serializable {
+public class Client extends Sign implements ClientDetails, Serializable {
 
     private static final long serialVersionUID = 1233211234567L;
 
