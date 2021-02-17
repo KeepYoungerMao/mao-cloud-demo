@@ -11,7 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class RoleDo extends Sign {
+public class Role extends Sign {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long id;

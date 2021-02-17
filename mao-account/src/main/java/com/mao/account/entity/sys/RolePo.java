@@ -39,16 +39,16 @@ public class RolePo {
      * @return Role
      * @throws InvalidParamException 转换时会抛出校验异常
      */
-    public RoleDo format(boolean edit) throws InvalidParamException {
-        RoleDo roleDo = new RoleDo();
+    public Role format(boolean edit) throws InvalidParamException {
+        Role role = new Role();
         if (edit) {
-            roleDo.setId(NU.validId(this.id));
+            role.setId(NU.validId(this.id));
         }
-        roleDo.setCode(this.code);
-        roleDo.setName(this.name);
-        roleDo.setIntro(this.intro);
-        roleDo.setOperator(OAuthUtil.getOperator());
-        return roleDo;
+        role.setCode(this.code);
+        role.setName(this.name);
+        role.setIntro(this.intro);
+        role.setOperator(OAuthUtil.getOperator());
+        return role;
     }
 
 }

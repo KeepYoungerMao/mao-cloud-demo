@@ -14,17 +14,17 @@
         SELECT per_id FROM sys_role_permission WHERE `del` = FALSE AND `role_id` = #{id}
     </select>
 
-    <select id="getRoleById" parameterType="java.lang.Long" resultType="com.mao.account.entity.sys.RoleDo">
+    <select id="getRoleById" parameterType="java.lang.Long" resultType="com.mao.account.entity.sys.Role">
         SELECT * FROM sys_role WHERE `id` = #{id} AND `del` = FALSE
     </select>
 
     <select id="getRolesByNameLike" parameterType="java.lang.String"
-            resultType="com.mao.account.entity.sys.RoleDo">
+            resultType="com.mao.account.entity.sys.Role">
         SELECT * FROM sys_role WHERE `del` = FALSE AND LOCATE(#{keyword},`name`) > 0
     </select>
 
     <select id="getRoles" parameterType="com.mao.common.entity.Query"
-            resultType="com.mao.account.entity.sys.RoleDo">
+            resultType="com.mao.account.entity.sys.Role">
         SELECT * FROM sys_role WHERE `del` = FALSE ORDER BY `id` ASC LIMIT #{start},#{size}
     </select>
 
@@ -36,11 +36,11 @@
         SELECT COUNT(`id`) FROM sys_role WHERE `del` = FALSE AND `name` = #{name}
     </select>
 
-    <insert id="saveRole" parameterType="com.mao.account.entity.sys.RoleDo">
+    <insert id="saveRole" parameterType="com.mao.account.entity.sys.Role">
         SELECT add_role(#{id},#{code},#{name},#{intro},#{creator})
     </insert>
 
-    <update id="updateRole" parameterType="com.mao.account.entity.sys.RoleDo">
+    <update id="updateRole" parameterType="com.mao.account.entity.sys.Role">
         UPDATE sys_role SET `code` = #{code},`name` = #{name},`intro` = #{intro},
         `update` = #{update},`updater` = #{updater} WHERE `id` = #{id}
     </update>

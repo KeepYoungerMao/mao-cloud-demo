@@ -1,7 +1,7 @@
 package com.mao.account.mapper.sys;
 
 import com.mao.account.entity.sys.Permission;
-import com.mao.account.entity.sys.RoleDo;
+import com.mao.account.entity.sys.Role;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -20,19 +20,19 @@ public interface RolePermissionMapper {
 
     List<Long> getPermissionIdByRoleId(@Param("id") long id);
 
-    RoleDo getRoleById(@Param("id") long id);
+    Role getRoleById(@Param("id") long id);
 
-    List<RoleDo> getRolesByNameLike(@Param("keyword") String keyword);
+    List<Role> getRolesByNameLike(@Param("keyword") String keyword);
 
-    List<RoleDo> getRoles(Query query);
+    List<Role> getRoles(Query query);
 
     int getRolesTotal(Query query);
 
     int checkExistRole(@Param("name") String name);
 
-    void saveRole(RoleDo roleDo);
+    void saveRole(Role role);
 
-    int updateRole(RoleDo roleDo);
+    int updateRole(Role role);
 
     void increasePermissions(@Param("role") Long role, @Param("list") List<Long> list);
 
