@@ -1,6 +1,8 @@
 package com.mao.account.entity.sys;
 
 import com.mao.account.util.OAuthUtil;
+import com.mao.common.ex.InvalidParamException;
+import com.mao.common.util.NU;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -13,7 +15,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class Role {
+public class RolePo {
 
     private String id;
 
@@ -28,15 +30,25 @@ public class Role {
     @Length(max = 200)
     private String intro;
 
-    private List<String> inc_permissions;   //需要增加的权限列表
-    private List<String> dec_permissions;   //需要去掉的权限列表
+    private List<String> incPermissions;   //需要增加的权限列表
+    private List<String> decPermissions;   //需要去掉的权限列表
 
-    public RoleDo toDo() {
+    /**
+     * 新增、更新时，转换为DO数据
+     * @param edit 是否为更新，更新时需要主键
+     * @return Role
+     * @throws InvalidParamException 转换时会抛出校验异常
+     */
+    public RoleDo format(boolean edit) throws InvalidParamException {
         RoleDo roleDo = new RoleDo();
+        if (edit) {
+            roleDo.setId(NU.validId(this.id));
+        }
         roleDo.setCode(this.code);
         roleDo.setName(this.name);
         roleDo.setIntro(this.intro);
         roleDo.setOperator(OAuthUtil.getOperator());
         return roleDo;
     }
+
 }

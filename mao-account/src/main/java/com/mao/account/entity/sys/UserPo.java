@@ -54,14 +54,7 @@ public class UserPo {
     public User format(boolean edit) throws InvalidParamException {
         User user = new User();
         if (edit) {
-            if (null == this.id) {
-                throw new InvalidParamException("缺少主键标识");
-            }
-            Long tid = NU.parseId(this.id);
-            if (NU.isNotZs(tid)) {
-                throw new InvalidParamException("非法主键标识");
-            }
-            user.setId(tid);
+            user.setId(NU.validId(this.id));
         }
         user.setUsername(this.username);
         user.setPassword(this.password);
