@@ -7,11 +7,11 @@
         <artifactId>mao-cloud-demo</artifactId>
         <version>1.0.0</version>
     </parent>
-    <groupId>com.mao.data</groupId>
-    <artifactId>mao-data-api</artifactId>
+    <groupId>com.mao.base</groupId>
+    <artifactId>mao-base-api</artifactId>
     <version>${parent.version}</version>
-    <name>mao-data-api</name>
-    <description>Spring Cloud 数据API</description>
+    <name>mao-base-api</name>
+    <description>基础api服务</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -23,10 +23,22 @@
     <dependencies>
 
         <!-- common组件 -->
-        <dependency>
+        <!--<dependency>
             <groupId>com.mao.common</groupId>
             <artifactId>mao-common</artifactId>
             <version>${version}</version>
+        </dependency>-->
+
+        <!--<dependency>
+            <groupId>com.mao.base</groupId>
+            <artifactId>mao-base-api-grpc</artifactId>
+            <version>1.0.0</version>
+        </dependency>-->
+
+        <!-- eureka client -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
         <dependency>
@@ -35,41 +47,9 @@
             <version>3.0.0</version>
         </dependency>
 
-        <!-- web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
-        </dependency>
-
-        <!-- eureka client -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-
-        <!-- ribbon -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
-        </dependency>
-
-        <!-- mysql -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
-        <!-- mybatis -->
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.1.3</version>
         </dependency>
 
     </dependencies>

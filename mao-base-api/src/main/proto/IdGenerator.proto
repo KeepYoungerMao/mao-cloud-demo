@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.mao.base.grpc";
+option java_outer_classname = "IdGeneratorService";
+option objc_class_prefix = "MAO";
+
+service IdGenerator {
+  rpc nextId(IdParam) returns (Id) {}
+}
+
+message IdParam {
+  int32 dataCenter = 1;
+}
+
+message Id {
+  string id = 1;
+}

@@ -31,3 +31,9 @@ eureka:
   client:
     service-url:
       defaultZone: http://127.0.0.1:10001/eureka/
+
+grpc:
+  client:
+    mao-base-api:
+      host: 127.0.0.1
+      port: 20001

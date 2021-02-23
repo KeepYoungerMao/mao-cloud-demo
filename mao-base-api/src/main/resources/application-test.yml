@@ -1,0 +1,14 @@
+server:
+  port: 10005
+
+grpc:
+  port: 20001
+
+spring:
+  application:
+    name: mao-base-api
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10001/eureka/
